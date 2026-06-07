@@ -125,3 +125,54 @@ class HotcutGptImage2Edit:
             print(f"[HOTCUT] GPT Image 2 Edit: задача {task_id}, спишется ~{cost} огней")
         urls = client.poll_image(task_id, max_wait=POLL_MAX_WAIT)
         return (_bytes_to_image_tensor(client.download(urls[0])),)
+
+
+class HotcutRemoveBackground:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "config": ("HOTCUT_CONFIG",),
+                "image": ("IMAGE",),
+            },
+            "optional": {
+                "max_wait_seconds": ("INT", {"default": 120, "min": 30, "max": 600}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("image",)
+    FUNCTION = "generate"
+    CATEGORY = "HOTCUT"
+
+    def generate(self, config, image, max_wait_seconds=120):
+        client = HotcutClient(config["api_key"], config["base_url"])
+        url = client.upload_image(_image_tensor_to_png_bytes(image))
+        task_id, cost = client.remove_background([url])
+        if cost is not None:
+            print(f"[HOTCUT] Удаление фона: задача {task_id}, спишется ~{cost} огней")
+        urls = client.poll_image(task_id, max_wait=max_wait_seconds)
+        return (_bytes_to_image_tensor(client.download(urls[0])),)
+
+
+class HotcutBalance:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {"required": {"config": ("HOTCUT_CONFIG",)}}
+
+    RETURN_TYPES = ("INT", "STRING")
+    RETURN_NAMES = ("flames", "text")
+    FUNCTION = "check"
+    CATEGORY = "HOTCUT"
+
+    @classmethod
+    def IS_CHANGED(cls, *args, **kwargs):
+        # всегда перезапрашивать (баланс меняется вне графа)
+        return float("nan")
+
+    def check(self, config):
+        client = HotcutClient(config["api_key"], config["base_url"])
+        flames = client.balance()
+        text = f"{flames} огней"
+        print(f"[HOTCUT] Баланс: {text}")
+        return (flames, text)

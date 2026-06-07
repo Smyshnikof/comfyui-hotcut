@@ -34,29 +34,8 @@ class HotcutClient:
     def _headers(self):
         return {"Authorization": f"Bearer {self.api_key}"}
 
-    def submit_image(
-        self,
-        prompt,
-        resolution="1K",
-        aspect_ratio="auto",
-        mode="text-to-image",
-        input_urls=None,
-        nsfw_checker=None,
-    ):
-        """Возвращает (task_id, cost_flames|None)."""
-        body = {
-            "mode": mode,
-            "prompt": prompt,
-            "resolution": resolution,
-            "aspect_ratio": aspect_ratio,
-        }
-        if input_urls:
-            body["input_urls"] = input_urls
-        # GPT Image 2 модерируется провайдером всегда — тумблера нет, не шлём.
-        # Параметр оставлен для будущих моделей, где он реально поддерживается.
-        if nsfw_checker is not None:
-            body["nsfw_checker"] = bool(nsfw_checker)
-
+    def _submit(self, body):
+        """POST /api/v1/images. Возвращает (task_id, cost_flames|None)."""
         resp = requests.post(
             f"{self.base_url}/api/v1/images",
             json=body,
@@ -70,6 +49,46 @@ class HotcutClient:
         if not task_id:
             raise HotcutError("Сервис не вернул task_id.")
         return task_id, data.get("cost_flames")
+
+    def submit_image(
+        self,
+        prompt,
+        resolution="1K",
+        aspect_ratio="auto",
+        mode="text-to-image",
+        input_urls=None,
+        nsfw_checker=None,
+    ):
+        """GPT Image 2. Возвращает (task_id, cost_flames|None)."""
+        body = {
+            "model": "gpt-image-2",
+            "mode": mode,
+            "prompt": prompt,
+            "resolution": resolution,
+            "aspect_ratio": aspect_ratio,
+        }
+        if input_urls:
+            body["input_urls"] = input_urls
+        # GPT Image 2 модерируется провайдером всегда — тумблера нет, не шлём.
+        if nsfw_checker is not None:
+            body["nsfw_checker"] = bool(nsfw_checker)
+        return self._submit(body)
+
+    def remove_background(self, input_urls):
+        """Удаление фона. Возвращает (task_id, cost_flames|None)."""
+        return self._submit({"model": "remove-background", "input_urls": input_urls})
+
+    def balance(self):
+        """Доступный остаток огней (GET /api/v1/me)."""
+        resp = requests.get(
+            f"{self.base_url}/api/v1/me",
+            headers=self._headers(),
+            timeout=self.timeout,
+        )
+        data = self._json(resp)
+        if resp.status_code != 200:
+            raise HotcutError(self._msg(data, resp))
+        return int(data.get("flames", 0) or 0)
 
     def poll_image(self, task_id, max_wait=300.0, interval=2.0):
         """Ждёт результат, возвращает список URL. Бросает HotcutError на fail/timeout."""

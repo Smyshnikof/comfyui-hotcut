@@ -7,11 +7,19 @@ const ACCENT = "#ff6b35"; // бренд HOTCUT (огонь)
 const TITLE_BG = "#1a1412"; // тёмный тёплый заголовок
 const BODY_BG = "#0e0e10"; // near-black тело
 
-const HOTCUT_NODES = new Set(["HotcutConfig", "HotcutGptImage2", "HotcutGptImage2Edit"]);
+const HOTCUT_NODES = new Set([
+  "HotcutConfig",
+  "HotcutGptImage2",
+  "HotcutGptImage2Edit",
+  "HotcutRemoveBackground",
+  "HotcutBalance",
+]);
 const GEN_NODES = new Set(["HotcutGptImage2", "HotcutGptImage2Edit"]);
 
 // Огни по resolution — синхронно с lib/economics.ts (GPT_IMAGE_2)
 const FLAMES_BY_RES = { "1K": 39, "2K": 65, "4K": 103 };
+// Модели с фиксированной ценой
+const FLAMES_FIXED = { HotcutRemoveBackground: 10 };
 
 // Предзагрузка лого (лежит рядом с этим файлом в web/)
 const logo = new Image();
@@ -53,11 +61,16 @@ app.registerExtension({
         ctx.drawImage(logo, logoLeft, -titleH + (titleH - s) / 2, s, s);
       }
 
-      // «≈ N 🔥» для генерационных нод — слева от лого
+      // «≈ N 🔥» — слева от лого. Для gpt-image-2 цена от resolution, иначе фикс.
+      let flames = null;
       if (GEN_NODES.has(className)) {
         const resW = this.widgets?.find((wd) => wd.name === "resolution");
         const res = (resW && resW.value) || "1K";
-        const flames = FLAMES_BY_RES[res] || FLAMES_BY_RES["1K"];
+        flames = FLAMES_BY_RES[res] || FLAMES_BY_RES["1K"];
+      } else if (FLAMES_FIXED[className] != null) {
+        flames = FLAMES_FIXED[className];
+      }
+      if (flames != null) {
         ctx.save();
         ctx.fillStyle = ACCENT;
         ctx.font = "12px sans-serif";

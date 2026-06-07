@@ -11,6 +11,8 @@
 | **HOTCUT API** | Конфиг: API-ключ + базовый URL. Отдаёт `config` для остальных нод. |
 | **HOTCUT · GPT Image 2** | text-to-image → `IMAGE`. Промпт, resolution (1K/2K/4K), aspect ratio. |
 | **HOTCUT · GPT Image 2 Edit** | image-to-image: берёт `IMAGE` на вход (локальный рендер) → правит/дорисовывает в облаке → `IMAGE`. Композиция local + cloud в одном графе. |
+| **HOTCUT · Удалить фон** | Берёт `IMAGE` → убирает фон в облаке → `IMAGE` (PNG с прозрачностью). ~10 огней. |
+| **HOTCUT · Баланс** | Показывает остаток огней. Выходы: `flames` (INT) + `text` (STRING). Удобно вывести на ноду показа текста или ветвить воркфлоу. |
 
 ## Установка
 
