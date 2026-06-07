@@ -153,26 +153,3 @@ class HotcutRemoveBackground:
             print(f"[HOTCUT] Удаление фона: задача {task_id}, спишется ~{cost} огней")
         urls = client.poll_image(task_id, max_wait=max_wait_seconds)
         return (_bytes_to_image_tensor(client.download(urls[0])),)
-
-
-class HotcutBalance:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {"required": {"config": ("HOTCUT_CONFIG",)}}
-
-    RETURN_TYPES = ("INT", "STRING")
-    RETURN_NAMES = ("flames", "text")
-    FUNCTION = "check"
-    CATEGORY = "HOTCUT"
-
-    @classmethod
-    def IS_CHANGED(cls, *args, **kwargs):
-        # всегда перезапрашивать (баланс меняется вне графа)
-        return float("nan")
-
-    def check(self, config):
-        client = HotcutClient(config["api_key"], config["base_url"])
-        flames = client.balance()
-        text = f"{flames} огней"
-        print(f"[HOTCUT] Баланс: {text}")
-        return (flames, text)
