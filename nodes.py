@@ -135,9 +135,6 @@ class HotcutRemoveBackground:
                 "config": ("HOTCUT_CONFIG",),
                 "image": ("IMAGE",),
             },
-            "optional": {
-                "max_wait_seconds": ("INT", {"default": 120, "min": 30, "max": 600}),
-            },
         }
 
     RETURN_TYPES = ("IMAGE",)
@@ -145,11 +142,11 @@ class HotcutRemoveBackground:
     FUNCTION = "generate"
     CATEGORY = "HOTCUT"
 
-    def generate(self, config, image, max_wait_seconds=120):
+    def generate(self, config, image):
         client = HotcutClient(config["api_key"], config["base_url"])
         url = client.upload_image(_image_tensor_to_png_bytes(image))
         task_id, cost = client.remove_background([url])
         if cost is not None:
             print(f"[HOTCUT] Удаление фона: задача {task_id}, спишется ~{cost} огней")
-        urls = client.poll_image(task_id, max_wait=max_wait_seconds)
+        urls = client.poll_image(task_id, max_wait=POLL_MAX_WAIT)
         return (_bytes_to_image_tensor(client.download(urls[0])),)
