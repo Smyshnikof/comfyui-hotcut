@@ -19,8 +19,9 @@ const FLAMES_BY_RES = { "1K": 39, "2K": 65, "4K": 103 };
 // Модели с фиксированной ценой
 const FLAMES_FIXED = { HotcutRemoveBackground: 10 };
 
+const LOGO_V = "2"; // бамп при смене картинки → сбрасывает кэш браузера
 const logo = new Image();
-logo.src = new URL("./hotcut_logo.png", import.meta.url).href;
+logo.src = new URL("./hotcut_logo.png?v=" + LOGO_V, import.meta.url).href;
 let logoReady = false;
 logo.onload = () => {
   logoReady = true;
