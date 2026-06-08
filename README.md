@@ -22,7 +22,7 @@
 **Вручную:**
 ```bash
 cd ComfyUI/custom_nodes
-git clone https://github.com/itsmyshnikov/comfyui-hotcut.git
+git clone https://github.com/Smyshnikof/comfyui-hotcut.git
 cd comfyui-hotcut
 pip install -r requirements.txt
 ```

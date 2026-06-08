@@ -1,16 +1,14 @@
 [project]
 name = "comfyui-hotcut"
-description = "HOTCUT nodes for ComfyUI — cloud image models (GPT Image 2) billed in rubles via the HOTCUT API. Sharp text, Cyrillic and faces that local models struggle with, right inside your graph."
+description = "HOTCUT nodes for ComfyUI — cloud image models (GPT Image 2, background removal) billed in rubles via the HOTCUT API. Sharp text, Cyrillic and faces that local models struggle with, right inside your graph."
 version = "0.1.0"
-license = { file = "LICENSE" }
+license = { text = "MIT License" }
 dependencies = ["requests", "Pillow", "numpy"]
 
 [project.urls]
-Repository = "https://github.com/itsmyshnikov/comfyui-hotcut"
+Repository = "https://github.com/Smyshnikof/comfyui-hotcut"
 
-# Метаданные для ComfyUI Registry (https://registry.comfy.org).
-# PublisherId заполнить при первой публикации через `comfy node publish`.
 [tool.comfy]
-PublisherId = ""
-DisplayName = "ComfyUI HOTCUT"
-Icon = ""
+PublisherId = "smyshnikof"
+DisplayName = "HOTCUT"
+Icon = "https://raw.githubusercontent.com/Smyshnikof/comfyui-hotcut/main/icon.png"
