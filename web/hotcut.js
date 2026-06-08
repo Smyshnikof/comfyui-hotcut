@@ -53,7 +53,7 @@ function flamesForClass(node, className) {
   return null;
 }
 
-// Рисует лого в заголовке + превью «≈ N» (огней). Работает и для нашей ноды,
+// Рисует лого в заголовке + превью «≈ N 🔥» (огней). Работает и для нашей ноды,
 // и для ноды-сабграфа (className передаём явно). rightPad резервирует место
 // справа под значок «войти в сабграф», чтобы лого на него не налезало.
 function drawBadge(node, ctx, className, rightPad = 0) {
@@ -70,11 +70,11 @@ function drawBadge(node, ctx, className, rightPad = 0) {
   const flames = flamesForClass(node, className);
   if (flames != null) {
     ctx.save();
-    ctx.fillStyle = "#f5f5f5"; // белым — контраст на оранжевой шапке (огни обозначает лого справа)
+    ctx.fillStyle = "#f5f5f5"; // цифра белым — контраст на тёмно-оранжевой шапке (🔥 рендерится своим цветом)
     ctx.font = "600 12px sans-serif";
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
-    ctx.fillText(`≈ ${flames}`, logoLeft - 6, -titleH / 2);
+    ctx.fillText(`≈ ${flames} 🔥`, logoLeft - 6, -titleH / 2);
     ctx.restore();
   }
 }
