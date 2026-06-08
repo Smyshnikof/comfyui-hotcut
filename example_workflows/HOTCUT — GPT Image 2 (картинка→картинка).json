@@ -236,7 +236,7 @@
         },
         "revision": 0,
         "config": {},
-        "name": "HOTCUT — GPT IMAGE 2 T2I",
+        "name": "HOTCUT — GPT IMAGE 2 I2I",
         "inputNode": {
           "id": -10,
           "bounding": [
