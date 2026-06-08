@@ -4,7 +4,7 @@
 import { app } from "../../scripts/app.js";
 
 const ACCENT = "#ff6b35"; // бренд HOTCUT
-const TITLE_BG = "#8a3a1c"; // брендовая шапка — тёмный оранжевый из семейства акцента
+const TITLE_BG = "#5a2410"; // брендовая шапка — насыщенный бёрнт-оранж, светлый текст контрастит
 const BODY_BG = "#0e0e10"; // near-black тело
 
 const HOTCUT_NODES = new Set([
