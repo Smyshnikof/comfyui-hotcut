@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-hotcut"
 description = "HOTCUT nodes for ComfyUI — cloud image models (GPT Image 2, background removal) billed in rubles via the HOTCUT API. Sharp text, Cyrillic and faces that local models struggle with, right inside your graph."
-version = "0.1.7"
+version = "0.1.8"
 license = { text = "MIT License" }
 dependencies = ["requests", "Pillow", "numpy"]
 
