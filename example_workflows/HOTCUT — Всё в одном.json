@@ -1,0 +1,549 @@
+{
+  "id": "dda50864-9fcf-4420-8ddf-4aec5546ac07",
+  "revision": 0,
+  "last_node_id": 33,
+  "last_link_id": 35,
+  "nodes": [
+    {
+      "id": 32,
+      "type": "SaveImage",
+      "pos": [
+        1660,
+        1090
+      ],
+      "size": [
+        270,
+        260
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 35
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.48",
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "version": "7.0.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": [
+        "Hotcut"
+      ],
+      "color": "#000000",
+      "bgcolor": "#000000"
+    },
+    {
+      "id": 31,
+      "type": "HotcutRemoveBackground",
+      "pos": [
+        1230,
+        1090
+      ],
+      "size": [
+        400,
+        46
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "config",
+          "type": "HOTCUT_CONFIG",
+          "link": 34
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            35
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-hotcut",
+        "ver": "952b07133758642b1373105a619362c960ffc4ee",
+        "Node name for S&R": "HotcutRemoveBackground",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.5.1"
+        }
+      },
+      "widgets_values": [],
+      "color": "#1a1412",
+      "bgcolor": "#0e0e10"
+    },
+    {
+      "id": 14,
+      "type": "HotcutGptImage2Edit",
+      "pos": [
+        2080,
+        590
+      ],
+      "size": [
+        400,
+        330
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "config",
+          "type": "HOTCUT_CONFIG",
+          "link": 24
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 31
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            32
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-hotcut",
+        "ver": "952b07133758642b1373105a619362c960ffc4ee",
+        "Node name for S&R": "HotcutGptImage2Edit",
+        "aux_id": "Smyshnikof/comfyui-hotcut",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.1"
+        }
+      },
+      "widgets_values": [
+        "",
+        "1K",
+        "auto"
+      ],
+      "color": "#1a1412",
+      "bgcolor": "#0e0e10"
+    },
+    {
+      "id": 26,
+      "type": "LoadImage",
+      "pos": [
+        1770,
+        590
+      ],
+      "size": [
+        280,
+        330
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            31
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.50",
+        "Node name for S&R": "LoadImage",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "ue_properties": {
+          "version": "7.0.1",
+          "widget_ue_connectable": {
+            "image": true,
+            "upload": true
+          },
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Оригинал.jfif",
+        "image"
+      ],
+      "color": "#000000",
+      "bgcolor": "#000000"
+    },
+    {
+      "id": 28,
+      "type": "SaveImage",
+      "pos": [
+        2510,
+        590
+      ],
+      "size": [
+        290,
+        330
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 7,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 32
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.48",
+        "Node name for S&R": "SaveImage",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "ue_properties": {
+          "version": "7.0.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Hotcut"
+      ],
+      "color": "#000000",
+      "bgcolor": "#000000"
+    },
+    {
+      "id": 11,
+      "type": "HotcutGptImage2",
+      "pos": [
+        920,
+        600
+      ],
+      "size": [
+        400,
+        310
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "config",
+          "type": "HOTCUT_CONFIG",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            33
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-hotcut",
+        "ver": "952b07133758642b1373105a619362c960ffc4ee",
+        "Node name for S&R": "HotcutGptImage2",
+        "aux_id": "Smyshnikof/comfyui-hotcut",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.1"
+        }
+      },
+      "widgets_values": [
+        "Car",
+        "1K",
+        "16:9"
+      ],
+      "color": "#1a1412",
+      "bgcolor": "#0e0e10"
+    },
+    {
+      "id": 30,
+      "type": "SaveImage",
+      "pos": [
+        1350,
+        600
+      ],
+      "size": [
+        330,
+        310
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 33
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.48",
+        "Node name for S&R": "SaveImage",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "ue_properties": {
+          "version": "7.0.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Hotcut"
+      ],
+      "color": "#000000",
+      "bgcolor": "#000000"
+    },
+    {
+      "id": 20,
+      "type": "HotcutConfig",
+      "pos": [
+        900,
+        370
+      ],
+      "size": [
+        280,
+        110
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "config",
+          "type": "HOTCUT_CONFIG",
+          "links": [
+            22,
+            24,
+            34
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-hotcut",
+        "ver": "952b07133758642b1373105a619362c960ffc4ee",
+        "Node name for S&R": "HotcutConfig",
+        "aux_id": "Smyshnikof/comfyui-hotcut",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.5.1"
+        }
+      },
+      "widgets_values": [
+        "$ENV",
+        "https://hotcut.ru",
+        ""
+      ],
+      "color": "#1a1412",
+      "bgcolor": "#0e0e10"
+    },
+    {
+      "id": 24,
+      "type": "MarkdownNote",
+      "pos": [
+        370,
+        370
+      ],
+      "size": [
+        495.7116873037003,
+        776.1248817531703
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Model links",
+      "properties": {
+        "ue_properties": {
+          "version": "7.0.1",
+          "widget_ue_connectable": {}
+        }
+      },
+      "widgets_values": [
+        "# HOTCUT · ComfyUI — облачные генерации с оплатой в рублях\n\nНоды подключают в ComfyUI облачные модели изображений HOTCUT. Локально ничего не качаем — генерация идёт на сервере, оплата огнями HOTCUT (рубли, без зарубежных карт).\n\n**Главная фишка — [GPT Image 2](https://hotcut.ru):** чёткий текст, кириллица и лица, которые Flux / Qwen / SDXL делают плохо. Плюс редактирование изображений и удаление фона — всё в одном графе.\n\n---\n\n## 🔌 Установка нод\n\n**Через ComfyUI Manager** (проще всего)\n\n- Открыть **Manager → Custom Nodes Manager**, найти **HOTCUT** → Install → перезапустить ComfyUI.\n\n**Вручную**\n\n```bash\ncd ComfyUI/custom_nodes\ngit clone https://github.com/Smyshnikof/comfyui-hotcut.git\ncd comfyui-hotcut\npip install -r requirements.txt\n```\n\nПосле перезапуска ноды появятся в категории **HOTCUT** (правый клик по холсту → Add Node → HOTCUT).\n\n---\n\n## 🔑 Получение API-ключа\n\n1. Зарегистрироваться и пополнить баланс огней — [hotcut.ru](https://hotcut.ru)\n2. Открыть **Студию → API** — [hotcut.ru/studio/api-keys](https://hotcut.ru/studio/api-keys)\n3. **Создать ключ** → скопировать `hc_live_...` (показывается **один раз**, потом не подсмотреть)\n4. Вставить ключ в ноду **HOTCUT API**\n\n**Чтобы ключ не утёк в сохранённый `workflow.json`** — оставьте в поле `api_key` значение `$ENV` и задайте переменную окружения перед запуском ComfyUI:\n\n```bash\n# Windows\nsetx HOTCUT_API_KEY hc_live_xxx\n\n# macOS / Linux\nexport HOTCUT_API_KEY=hc_live_xxx\n```\n\n---\n\n## 🧩 Ноды\n\n| Нода | Что делает |\n|------|------------|\n| **HOTCUT API** | Ключ + адрес сервиса. Отдаёт `config` остальным нодам. Кнопка **«Проверить баланс 🔥»** показывает остаток без запуска графа. |\n| **HOTCUT · GPT Image 2** | Text-to-image: промпт + разрешение + соотношение сторон → `IMAGE` |\n| **HOTCUT · GPT Image 2 Edit** | Image-to-image: подаёте `IMAGE`, дорисовываете / меняете → `IMAGE`. Сочетается с локальными нодами в одном графе. |\n| **HOTCUT · Удалить фон** | Подаёте `IMAGE` → PNG с прозрачностью |\n\n---\n\n## ⚙️ Как собрать граф\n\n**Генерация по тексту:**\n\n```\n[HOTCUT API] —config→ [HOTCUT · GPT Image 2] —IMAGE→ [Preview Image]\n```\n\n**Редактирование своей картинки:**\n\n```\n[Load Image] —IMAGE→ ┐\n                     [HOTCUT · GPT Image 2 Edit] —IMAGE→ [Preview Image]\n[HOTCUT API] —config→ ┘\n```\n\n**Удаление фона:**\n\n```\n[Load Image] —IMAGE→ ┐\n                     [HOTCUT · Удалить фон] —IMAGE→ [Save Image]\n[HOTCUT API] —config→ ┘\n```\n\nПараметры **GPT Image 2**:\n\n- **resolution** — `1K` / `2K` / `4K`\n- **aspect_ratio** — `auto`, `1:1`, `16:9`, `9:16`, `4:3`, `3:2`, `21:9` и др.\n\n> ⚠️ **Ограничения по разрешению:** `auto` работает только в **1K**, а `1:1` — максимум **2K**. Если выбрать выше, разрешение автоматически снижается до допустимого — и списывается огней по фактическому, более низкому. Для полноценных **2K/4K** берите конкретное соотношение (`16:9`, `4:3` и т.д.).\n\n---\n\n## 🔥 Стоимость\n\nСписывается огнями HOTCUT, цена зависит только от разрешения:\n\n| Разрешение | Огней за кадр |\n|------------|---------------|\n| 1K | ≈ 39 |\n| 2K | ≈ 65 |\n| 4K | ≈ 103 |\n| Удаление фона | ≈ 10 |\n\nСоотношение сторон на цену не влияет. Перед запуском нода показывает превью **«≈ N 🔥»**.\n\n**Списание — строго по факту успешной генерации.** Если запрос не прошёл (ошибка сервиса или блокировка модерацией) — огни не списываются.\n\n---\n\n## 📚 Resources\n\n🎥 **HOTCUT в ComfyUI — YT-гайд:** [Егор Смышников YT](https://www.youtube.com/@itsmyshnikov)\n\n🌐 **Сайт и пополнение огней:** [hotcut.ru](https://hotcut.ru)\n\n🔑 **Создать API-ключ:** [hotcut.ru/studio/api-keys](https://hotcut.ru/studio/api-keys)\n\n💬 **Сообщество Гильдии:** [Присоединиться](https://t.me/tribute/app?startapp=sgyZ)\n"
+      ],
+      "color": "#000000",
+      "bgcolor": "#000000"
+    }
+  ],
+  "links": [
+    [
+      22,
+      20,
+      0,
+      11,
+      0,
+      "HOTCUT_CONFIG"
+    ],
+    [
+      24,
+      20,
+      0,
+      14,
+      0,
+      "HOTCUT_CONFIG"
+    ],
+    [
+      31,
+      26,
+      0,
+      14,
+      1,
+      "IMAGE"
+    ],
+    [
+      32,
+      14,
+      0,
+      28,
+      0,
+      "IMAGE"
+    ],
+    [
+      33,
+      11,
+      0,
+      30,
+      0,
+      "IMAGE"
+    ],
+    [
+      34,
+      20,
+      0,
+      31,
+      0,
+      "HOTCUT_CONFIG"
+    ],
+    [
+      35,
+      31,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "GPT IMAGE 2 T2I",
+      "bounding": [
+        900,
+        500,
+        800,
+        440
+      ],
+      "color": "#000000",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "GPT IMAGE 2 I2I",
+      "bounding": [
+        1750,
+        500,
+        1070,
+        440
+      ],
+      "color": "#000000",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "Удаление фона",
+      "bounding": [
+        900,
+        1000,
+        1060,
+        400
+      ],
+      "color": "#000000",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7513148009015777,
+      "offset": [
+        287.5303804176755,
+        -34.65094396154814
+      ]
+    },
+    "workflowRendererVersion": "LG",
+    "ue_links": [],
+    "links_added_by_ue": [],
+    "frontendVersion": "1.36.13",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

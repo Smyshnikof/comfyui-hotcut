@@ -31,6 +31,54 @@ function applyStyle(node) {
   node.bgcolor = BODY_BG;
 }
 
+// Ограничения провайдера — зеркало normalizeResolution на бэке
+// (app/api/v1/images/route.ts): auto → только 1K; 1:1 не даёт 4K → 2K.
+// Списание идёт по нормализованному разрешению, поэтому и превью считаем так же.
+function normalizeRes(aspect, res) {
+  if (aspect === "1:1" && res === "4K") return "2K";
+  if (aspect === "auto" && res !== "1K") return "1K";
+  return res;
+}
+
+// Сколько огней спишет нода данного класса. Для генерации цена зависит от
+// resolution с учётом aspect_ratio (оба виджета есть и на ноде, и на сабграфе).
+function flamesForClass(node, className) {
+  if (GEN_NODES.has(className)) {
+    const res = node.widgets?.find((wd) => wd.name === "resolution")?.value || "1K";
+    const aspect = node.widgets?.find((wd) => wd.name === "aspect_ratio")?.value || "auto";
+    const eff = normalizeRes(aspect, res);
+    return FLAMES_BY_RES[eff] || FLAMES_BY_RES["1K"];
+  }
+  if (FLAMES_FIXED[className] != null) return FLAMES_FIXED[className];
+  return null;
+}
+
+// Рисует лого в заголовке + превью «≈ N 🔥». Работает и для нашей ноды,
+// и для ноды-сабграфа (className передаём явно). rightPad резервирует место
+// справа под значок «войти в сабграф», чтобы лого на него не налезало.
+function drawBadge(node, ctx, className, rightPad = 0) {
+  const titleH = (window.LiteGraph && window.LiteGraph.NODE_TITLE_HEIGHT) || 20;
+  const w = node.size[0] - rightPad;
+
+  let logoLeft = w - 8;
+  if (logoReady) {
+    const s = 14;
+    logoLeft = w - s - 8;
+    ctx.drawImage(logo, logoLeft, -titleH + (titleH - s) / 2, s, s);
+  }
+
+  const flames = flamesForClass(node, className);
+  if (flames != null) {
+    ctx.save();
+    ctx.fillStyle = ACCENT;
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.fillText(`≈ ${flames} 🔥`, logoLeft - 6, -titleH / 2);
+    ctx.restore();
+  }
+}
+
 // Кнопка «Проверить баланс» на ноде HOTCUT API: дёргает локальный роут ComfyUI
 // (/hotcut/balance, тот же origin → без CORS), показывает результат на себе.
 function setupBalanceButton(node) {
@@ -58,10 +106,61 @@ function setupBalanceButton(node) {
   });
 }
 
-function setup(node) {
-  if (!node || !HOTCUT_NODES.has(node.comfyClass)) return;
+// Найти внутренние ноды свёрнутого сабграфа (API субграфов новый и ещё меняется,
+// поэтому пробуем несколько мест и всё в try/catch).
+function innerNodes(node) {
+  const sg = node.subgraph || node._subgraph;
+  if (!sg) return null;
+  return sg.nodes || sg._nodes || (sg.graph && sg.graph.nodes) || null;
+}
+
+// Если нода — сабграф с нашими нодами внутри, вернуть класс для расчёта цены.
+// Приоритет генерационным нодам (у них цена зависит от resolution).
+function hotcutSubgraphClass(node) {
+  try {
+    const nodes = innerNodes(node);
+    if (!nodes) return null;
+    let fallback = null;
+    for (const n of nodes) {
+      const t = n.type || n.comfyClass;
+      if (HOTCUT_NODES.has(t)) {
+        if (GEN_NODES.has(t)) return t;
+        fallback = t;
+      }
+    }
+    return fallback;
+  } catch (e) {
+    return null;
+  }
+}
+
+// Повесить фирменный вид + превью цены на ноду-сабграф (per-instance, т.к. её
+// тип — это UUID сабграфа, а не наш класс — общий хук на прототип не цепляется).
+function attachSubgraphPreview(node, innerClass) {
+  if (node.__hotcutPreview) return;
+  node.__hotcutPreview = true;
   applyStyle(node);
-  if (node.comfyClass === "HotcutConfig") setupBalanceButton(node);
+  const prev = node.onDrawForeground;
+  node.onDrawForeground = function (ctx) {
+    prev?.apply(this, arguments);
+    if (this.flags?.collapsed) return;
+    // Резерв справа под значок входа в сабграф (≈ высота заголовка).
+    const titleH = (window.LiteGraph && window.LiteGraph.NODE_TITLE_HEIGHT) || 20;
+    drawBadge(this, ctx, innerClass, titleH + 4);
+  };
+  node.setDirtyCanvas?.(true, true);
+}
+
+function setup(node) {
+  if (!node) return;
+  if (HOTCUT_NODES.has(node.comfyClass)) {
+    applyStyle(node);
+    if (node.comfyClass === "HotcutConfig") setupBalanceButton(node);
+    return;
+  }
+  // Не наша нода напрямую — возможно, это сабграф с нашими нодами внутри.
+  const innerClass = hotcutSubgraphClass(node);
+  if (innerClass) attachSubgraphPreview(node, innerClass);
 }
 
 app.registerExtension({
@@ -81,34 +180,7 @@ app.registerExtension({
     nodeType.prototype.onDrawForeground = function (ctx) {
       onDrawForeground?.apply(this, arguments);
       if (this.flags?.collapsed) return;
-
-      const titleH = (window.LiteGraph && window.LiteGraph.NODE_TITLE_HEIGHT) || 20;
-      const w = this.size[0];
-
-      let logoLeft = w - 8;
-      if (logoReady) {
-        const s = 14;
-        logoLeft = w - s - 8;
-        ctx.drawImage(logo, logoLeft, -titleH + (titleH - s) / 2, s, s);
-      }
-
-      let flames = null;
-      if (GEN_NODES.has(className)) {
-        const resW = this.widgets?.find((wd) => wd.name === "resolution");
-        const res = (resW && resW.value) || "1K";
-        flames = FLAMES_BY_RES[res] || FLAMES_BY_RES["1K"];
-      } else if (FLAMES_FIXED[className] != null) {
-        flames = FLAMES_FIXED[className];
-      }
-      if (flames != null) {
-        ctx.save();
-        ctx.fillStyle = ACCENT;
-        ctx.font = "12px sans-serif";
-        ctx.textAlign = "right";
-        ctx.textBaseline = "middle";
-        ctx.fillText(`≈ ${flames} 🔥`, logoLeft - 6, -titleH / 2);
-        ctx.restore();
-      }
+      drawBadge(this, ctx, className);
     };
   },
 });
